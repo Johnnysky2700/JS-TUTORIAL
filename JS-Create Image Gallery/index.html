@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS-Create Image Gallery</title>
+    <link rel="stylesheet" href="JS-Create Image Gallery/style.css">
+</head>
+<body>
+    <div class="gallery-wrap">
+        <img src="JS-Create Image Gallery/images/back.png" id="backBtn">
+        <div class="gallery">
+            <div>
+                <span><img src="JS-Create Image Gallery/images/image-1.png"></span>
+                <span><img src="JS-Create Image Gallery/images/image-2.png"></span>
+                <span><img src="JS-Create Image Gallery/images/image-3.png"></span>
+            </div>
+            <div>
+                <span><img src="JS-Create Image Gallery/images/image-4.png"></span>
+                <span><img src="JS-Create Image Gallery/images/image-5.png"></span>
+                <span><img src="JS-Create Image Gallery/images/image-6.png"></span>
+            </div>
+        </div>
+        <img src="JS-Create Image Gallery/images/next.png" id="nextBtn">
+    </div>
+    <script>
+        let scrolllContainer = document.querySelector(".gallery");
+        let backBtn = document.getElementById("backBtn")
+        let nextBtn = document.getElementById("nextBtn")
+
+        scrolllContainer.addEventListener("wheeI", (evt) => {
+            evt.preventDefault();
+            scrolllContainer.scrollLeft += evt.deItaY;
+            scrolllContainer.style.scrollBehavior = "auto";
+        });
+
+        nextBtn.addEventListener("click", ()=>{
+            scrolllContainer.style.scrollBehavior = "smooth";
+            scrolllContainer.scrollLeft += 900;
+        });
+
+        backBtn.addEventListener("click", ()=>{
+            scrolllContainer.style.scrollBehavior = "smooth";
+            scrolllContainer.scrollLeft -= 900;
+        });
+
+    </script>
+</body>
+</html>
