@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JS-Make A Quote</title>
-    <link rel="stylesheet" href="JS-Make Quote Generator/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
    <div class="quote-box">
@@ -12,28 +12,35 @@
     <blockquote id="quote">Loading....</blockquote>
     <span id="author">Loading....</span>
     <div>
-        <button onclick="getquote(api_url)">New Quote</button>
-        <button onclick="tweet()"><img src="JS-Make Quote Generator/Twitter.png"> Tweet</button>
+        <button onclick="getQuote()">New Quote</button>
+        <button onclick="tweet()"><img src="Twitter.png"> Tweet</button>
     </div>
    </div> 
    <script>
-    const quote = document.getElementById("quote")
-    const author = document.getElementById("author")
-    const api_url = "https://api.quotable.io/random";
+    const quoteElement = document.getElementById("quote");
+    const authorElement = document.getElementById("author");
+    const api_url = "https://qapi.vercel.app/api/random";
 
-    async function getquote(url){
-        const response = await fetch(url);
-        var data = await response.json();
-        console.log(data);
-        quote.innerHTML = data.content;
-        author.innerHTML = data.author;
+    async function getQuote() {
+        try {
+            const response = await fetch(api_url);
+            const data = await response.json();
+            console.log(data);
+            quoteElement.innerHTML = data.quote;
+            authorElement.innerHTML = data.author;
+        } catch (error) {
+            console.error("Error fetching the quote:", error);
+            quoteElement.innerHTML = "An error occurred. Please try again later.";
+            authorElement.innerHTML = "";
+        }
     }
 
-    getquote(api_url);
+    getQuote();
 
-    function tweet(){
-        window.open("https://twitter.com/intent/tweet?text=" + quote.innerHTML + "---- by " + author.innerHTML, 
-        "tweet Windom", "width=600, height=300");
+    function tweet() {
+        const tweetText = `${quoteElement.innerHTML} — ${authorElement.innerHTML}`;
+        const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
+        window.open(tweetUrl, "tweetWindow", "width=600, height=300");
     }
    </script>
 </body>

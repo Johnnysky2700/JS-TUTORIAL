@@ -1,43 +1,47 @@
 const notesContainer = document.querySelector(".notes-container");
 const createBtn = document.querySelector(".btn");
-let notes = document.querySelectorAll(".input-box");
 
-function showNotes(){
-    notesContainer.innerHTML = localStorage.getItem("notes");
+// Load saved notes on page load
+function showNotes() {
+    notesContainer.innerHTML = localStorage.getItem("notes") || ""; 
 }
 showNotes();
 
-function updateStorage(){
+// Save notes to localStorage
+function updateStorage() {
     localStorage.setItem("notes", notesContainer.innerHTML);
 }
 
-createBtn.addEventListener("click", ()=>{
+// Create a new note
+createBtn.addEventListener("click", () => {
     let inputBox = document.createElement("p");
     let img = document.createElement("img");
     inputBox.className = "input-box";
     inputBox.setAttribute("contenteditable", "true");
-    img.src = "JS-Note App/images/delete-icon.png";
-    notesContainer.appendChild(inputBox).appendChild(img);
-})
+    img.src = "./images/delete-icon.png";
 
-notesContainer.addEventListener("click", function(e){
-    if(e.target.tagName === "IMG"){
+    inputBox.appendChild(img);
+    notesContainer.appendChild(inputBox);
+
+    updateStorage(); // **Fix: Save new notes to localStorage**
+});
+
+// Event delegation for delete and update functionality
+notesContainer.addEventListener("click", function (e) {
+    if (e.target.tagName === "IMG") {
         e.target.parentElement.remove();
         updateStorage();
+    } else if (e.target.tagName === "P") {
+        document.querySelectorAll(".input-box").forEach(note => {
+            note.onkeyup = updateStorage; // Fix: Directly attach updateStorage
+        });
     }
-    else if(e.target.tagName === "p"){
-        notes = document.querySelectorAll(".input-box");
-        notes.forEach(nt => {
-            nt.onkeyup = function(){
-                updateStorage();
-            }
-        })
-    }
-})
+});
 
-document.addEventListener("keydown", event =>{
-    if(event.key === "Enter"){
+// Prevent "Enter" key from creating a new paragraph
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
         document.execCommand("insertLineBreak");
         event.preventDefault();
     }
-})
+});
